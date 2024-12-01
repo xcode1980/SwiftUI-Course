@@ -8,6 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    let gradientColors: [Color] = [.blue, .red]
+    let gradientColor2:[Color] = [.red, .blue]
+    
+    @State private var screenTapped: Bool = false //Need to use @State to change the value in View
+    @State private var offsetY: CGFloat = -1000.00
+    //Computed property
+    var colors: [Color] {
+        screenTapped ? gradientColors : gradientColor2
+    }
+    
     var body: some View {
 //        VStack(spacing: 100) {
 //            Text("SwiftUI Basics")
@@ -32,7 +43,7 @@ struct ContentView: View {
 //                .opacity(0.6)
 //                .edgesIgnoringSafeArea(.all)
             
-            LinearGradient(gradient: Gradient(colors: [.blue, .red]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(gradient: Gradient(colors: colors), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .opacity(0.8)
                 .edgesIgnoringSafeArea(.all)
             
@@ -42,6 +53,25 @@ struct ContentView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
+                .offset(y: offsetY)
+        }
+        .onTapGesture {
+         
+            withAnimation(.easeInOut(duration: 1)) {
+                //TODO: Change screen color on screen tap
+
+                screenTapped.toggle()
+                offsetY = screenTapped ? 0 : -1000
+                
+//                if screenTapped {
+//                    offsetY = 0
+//                }else{
+//                    offsetY = -1000
+//                }
+           
+            }
+           
+           
         }
     }
 }
